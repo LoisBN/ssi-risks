@@ -8,8 +8,8 @@ const Auth = props => {
   const [displayModal, setDisplayModal] = useState(false);
   ////const [displaySignout, setDisplaySignout] = useState(false);
   useEffect(() => {
-    console.log(props);
-  });
+    props.autolog(localStorage.getItem('access_token'));
+  }, []);
   return (
     <div>
       {
@@ -22,13 +22,18 @@ const Auth = props => {
       {!props.auth.authenticated ? (
         <>
           <button
+            style={{ float: 'right', marginRight: '10px' }}
+            className='to-left button'
             onClick={() => {
               setDisplayModal(true);
               setFormName('signup');
             }}>
             signup
-          </button>
+          </button>{' '}
+          {'  '}
           <button
+            style={{ float: 'right' }}
+            className='to-left button'
             onClick={() => {
               setDisplayModal(true);
               setFormName('login');
@@ -38,7 +43,10 @@ const Auth = props => {
         </>
       ) : (
         <>
-          <button onClick={() => localStorage.removeItem('access_token')}>
+          <button
+            style={{ float: 'right' }}
+            className='to-left button'
+            onClick={() => props.signout()}>
             signout
           </button>
         </>

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2"
 )
 
 func main()  {
@@ -20,12 +21,14 @@ func main()  {
 
     r := mux.NewRouter()
     r.Use(mux.CORSMethodMiddleware(r))
+    r.HandleFunc("/besoinSec",BesoinSecForm)
 
     srv := &http.Server{
-        Addr: ":8200",
+        Handler: r,
+        Addr: ":8300",
         ReadTimeout: 10*time.Second,
         WriteTimeout: 15*time.Second,
-        ReadHeaderTimeout: 3*time.Second,
+        ReadHeaderTimeout: 10*time.Second,
     }
 
     go func ()  {
@@ -53,4 +56,19 @@ func main()  {
 
     os.Exit(0)
 
+}
+
+func getSession() *mgo.Session {
+	session, err := mgo.Dial("mongodb://localhost:27017")
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+	return session
+}
+
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }

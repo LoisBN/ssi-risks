@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP, LOGOUT } from '../actions/types';
+import { LOGIN, SIGNUP, LOGOUT, AUTOLOGIN } from '../actions/types';
 
 export const auth = (state = { authenticated: false }, action) => {
   switch (action.type) {
@@ -8,7 +8,12 @@ export const auth = (state = { authenticated: false }, action) => {
       return { ...action.payload, authenticated: true };
     case LOGOUT:
       return { authenticated: false };
-    default:
+    case AUTOLOGIN:
+      if (action.payload.access_token) {
+        return { ...action.payload, authenticated: true };
+      }
       return { authenticated: false };
+    default:
+      return state;
   }
 };

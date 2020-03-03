@@ -5,5 +5,9 @@ export const fakeApi = axios.create({
 });
 
 export const authApi = axios.create({
-  baseURL: ':8200'
+  baseURL: 'http://localhost:8100'
+});
+
+export const projectApi = axios.create({
+  baseURL: 'http://localhost:8000'
 });

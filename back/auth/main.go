@@ -21,9 +21,10 @@ func main()  {
 
     r := mux.NewRouter()
     r.Use(mux.CORSMethodMiddleware(r))
-    r.HandleFunc("/signup",signup).Methods("POST")
-    r.HandleFunc("/login",login).Methods("POST")
-    r.HandleFunc("/autologin",autolog).Methods("POST")
+    r.HandleFunc("/signup",Signup).Methods("POST","OPTIONS")
+    r.HandleFunc("/login",Login).Methods("OPTIONS","POST")
+    r.HandleFunc("/autologin",Autolog).Methods("POST","OPTIONS")
+    
 
 
     srv := &http.Server{
@@ -68,4 +69,10 @@ func getSession() *mgo.Session {
         return nil
     }
     return session
+}
+
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+    (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }

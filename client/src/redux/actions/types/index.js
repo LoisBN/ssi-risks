@@ -3,3 +3,6 @@ export const FETCH_LIST_PROJ = 'FETCH_LIST_PROJ';
 export const LOGIN = 'LOGIN';
 export const SIGNUP = 'SIGNUP';
 export const LOGOUT = 'LOGOUT';
+export const PROJ_INIT = 'PROJ_INIT';
+export const PROJ_UPDATED = 'PROJ_UPDATED';
+export const AUTOLOGIN = 'AUTOLOGIN';

@@ -7,31 +7,35 @@ import TableFields from './components/TableFields';
 import BaremTable from './components/BaremTable';
 import Form from '../../Forms/Form';
 
-const Main = ({ fetchProj, projects }) => {
+const Main = ({ fetchProj, projects, auth }) => {
   const [formName, setFormName] = useState('');
   const [filter, setFilter] = useState('');
+  const [values, setValues] = useState('');
   const [displayModal, setDisplayModal] = useState('false');
   useEffect(() => {
     if (projects.length === 0) fetchProj();
-  });
+  }, [projects]);
   return (
     <div className='section'>
       {
         <Form
           formName={formName}
+          values={values}
           displayModal={displayModal}
           quit={setDisplayModal}
         />
       }
       <button className='button is-dark'>Lister tous les projets</button>{' '}
-      <button
-        className='button is-dark'
-        onClick={() => {
-          setDisplayModal(true);
-          setFormName('identification');
-        }}>
-        Initier un projet
-      </button>
+      {auth.authenticated && (
+        <button
+          className='button is-dark'
+          onClick={() => {
+            setDisplayModal(true);
+            setFormName('init');
+          }}>
+          Initier un projet
+        </button>
+      )}
       <br />
       <br />
       <div className='container'>
@@ -53,8 +57,9 @@ const Main = ({ fetchProj, projects }) => {
                   <TableFields />
                 </tfoot>
                 <tbody className='custom-tbody'>
-                  {projects.length > 0 ? (
-                    projects.map((val, id) => {
+                  {Object.values(projects).length > 0 ? (
+                    Object.values(projects).map((val, id) => {
+                      console.log(val);
                       if (val.name.toLowerCase().includes(filter)) {
                         return (
                           <TableContent
@@ -62,8 +67,9 @@ const Main = ({ fetchProj, projects }) => {
                             setDisplayModal={setDisplayModal}
                             formName={formName}
                             setFormName={setFormName}
-                            id={val.id}
-                            name={val.name}
+                            id={val.name}
+                            name={val.initiator}
+                            setValues={setValues}
                           />
                         );
                       }
@@ -90,7 +96,8 @@ const Main = ({ fetchProj, projects }) => {
 };
 
 const mapStateToProps = state => ({
-  projects: state.projects
+  projects: state.projects,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { fetchProj })(Main);

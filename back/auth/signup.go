@@ -13,7 +13,11 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func signup(w http.ResponseWriter,req *http.Request) {
+func Signup(w http.ResponseWriter,req *http.Request) {
+    setupResponse(&w,req)
+    if req.Method == "OPTIONS" {
+        return
+    }
     var p Profile
 
     bs,err := ioutil.ReadAll(req.Body)
@@ -32,11 +36,11 @@ func signup(w http.ResponseWriter,req *http.Request) {
         errMess := map[string]string{
             "message": "username already in use",
         }
+        w.WriteHeader(422)
         err = json.NewEncoder(w).Encode(&errMess)
         if err != nil {
             log.Println("failed to send the response")
         }
-        w.WriteHeader(422)
         return
     }
 
@@ -45,11 +49,11 @@ func signup(w http.ResponseWriter,req *http.Request) {
         errMess := map[string]string{
             "message": "email already in use",
         }
+        w.WriteHeader(422)
         err = json.NewEncoder(w).Encode(&errMess)
         if err != nil {
             log.Println("failed to send the response")
         }
-        w.WriteHeader(422)
         return
     }
 
@@ -77,7 +81,10 @@ func signup(w http.ResponseWriter,req *http.Request) {
     UUID,err := uuid.NewUUID()
 
     client.Set(UUID.String(),p.Username,24*time.Hour)
-    json.NewEncoder(w).Encode(map[string]string{
-        "access_token": UUID.String(),
-    })
+    err = json.NewEncoder(w).Encode(map[string]interface{}{
+            "email": p.Email,
+            "username": p.Username,
+            "admin":p.Admin,
+            "access_token": UUID.String(),
+        })
 }

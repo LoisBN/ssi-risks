@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { signup } from '../../../redux/actions';
 
-const Signup = () => {
+const Signup = props => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,9 +12,24 @@ const Signup = () => {
     password: ''
   });
 
+  const submit = useRef();
+
+  useEffect(() => {
+    if (props.auth.authenticated) {
+      props.quit();
+    }
+  }, [props]);
+
+  useEffect(() => {
+    if (props.send) {
+      submit.current.click();
+      props.setSend(false);
+    }
+  }, [props.send]);
+
   const handleSubmit = e => {
     e.preventDefault();
-    console.log({ username, email, password });
+    props.signup({ username, email, password });
   };
 
   const handleChange = e => {
@@ -121,9 +138,14 @@ const Signup = () => {
           </div>
           <p className='help is-danger'>{errorMessage.password}</p>
         </div>
+        <input ref={submit} type='submit' />
       </form>
     </>
   );
 };
 
-export default Signup;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { signup })(Signup);
