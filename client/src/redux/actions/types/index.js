@@ -6,3 +6,5 @@ export const LOGOUT = 'LOGOUT';
 export const PROJ_INIT = 'PROJ_INIT';
 export const PROJ_UPDATED = 'PROJ_UPDATED';
 export const AUTOLOGIN = 'AUTOLOGIN';
+export const FETCH_FORM = 'FETCH_FORM';
+export const CREATE_FORM = 'CREATE_FORM';

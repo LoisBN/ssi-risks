@@ -17,7 +17,7 @@ const TableFields = () => {
         <abbr title='Drawn'>Impacts potentiels sur le SI</abbr>
       </th>
       <th>
-        <abbr title='Lost'>Menaces potentiels sur le SI</abbr>
+        <abbr title='Lost'>Menaces potentielles sur le SI</abbr>
       </th>
       <th>
         <abbr title='Goals for'>Importances des vulnérabilités</abbr>

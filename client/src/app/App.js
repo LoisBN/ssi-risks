@@ -6,6 +6,7 @@ import { Router, Route } from 'react-router-dom';
 import history from './history';
 import Form from './Forms/Form';
 import Header from './Homepage/Header/Header';
+import AdminPage from './adminSection/AdminPage';
 
 const App = ({ test }) => {
   useEffect(() => {
@@ -15,14 +16,14 @@ const App = ({ test }) => {
     <div>
       <Router history={history}>
         <Route path='/' exact component={Home} />
-        <Route path='/project/init' exact>
+        <Route path='/admin' exact>
           <Header
             page={{
-              title: 'initier un projet',
-              subtitle: "Identification du système d'information"
+              title: 'Administration',
+              subtitle: 'Changement des formulaires'
             }}
           />
-          <Form />
+          <AdminPage />
         </Route>
       </Router>
     </div>

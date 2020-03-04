@@ -22,6 +22,10 @@ func main()  {
     r := mux.NewRouter()
     r.Use(mux.CORSMethodMiddleware(r))
     r.HandleFunc("/besoinSec",BesoinSecForm)
+    r.HandleFunc("/homologation",Homologation)
+    r.HandleFunc("/impacts",ImpactsForm)
+    r.HandleFunc("/menaces",MenacesForm)
+    r.HandleFunc("/importanceVuln",ImportanceVulnForm)
 
     srv := &http.Server{
         Handler: r,

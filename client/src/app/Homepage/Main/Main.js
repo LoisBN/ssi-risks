@@ -6,6 +6,7 @@ import PackmanLoader from './components/PackmanLoader';
 import TableFields from './components/TableFields';
 import BaremTable from './components/BaremTable';
 import Form from '../../Forms/Form';
+import { Link } from 'react-router-dom';
 
 const Main = ({ fetchProj, projects, auth }) => {
   const [formName, setFormName] = useState('');
@@ -34,6 +35,13 @@ const Main = ({ fetchProj, projects, auth }) => {
             setFormName('init');
           }}>
           Initier un projet
+        </button>
+      )}{' '}
+      {auth.admin && (
+        <button className='button is-dark'>
+          <Link to='/admin' style={{ color: 'white' }}>
+            Administration
+          </Link>
         </button>
       )}
       <br />

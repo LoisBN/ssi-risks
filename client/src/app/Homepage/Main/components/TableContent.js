@@ -25,7 +25,7 @@ const TableContent = props => {
         title='homologation'
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('besoin sécurité');
+          props.setFormName('homologation');
         }}>
         38
       </td>
@@ -40,21 +40,21 @@ const TableContent = props => {
       <td
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('besoin sécurité');
+          props.setFormName('impacts potentiels');
         }}>
         12
       </td>
       <td
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('besoin sécurité');
+          props.setFormName('menaces potentielles');
         }}>
         3
       </td>
       <td
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('besoin sécurité');
+          props.setFormName('importances des vulnérabilités');
         }}>
         68
       </td>
@@ -63,7 +63,7 @@ const TableContent = props => {
         className='is-dark'
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('besoin sécurité');
+          props.setFormName('sauvegarder');
         }}>
         <strong style={{ color: 'white' }}>Sauvegarder</strong>
       </td>

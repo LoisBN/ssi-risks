@@ -6,9 +6,11 @@ import {
   LOGOUT,
   PROJ_INIT,
   PROJ_UPDATED,
-  AUTOLOGIN
+  AUTOLOGIN,
+  FETCH_FORM,
+  CREATE_FORM
 } from './types';
-import { fakeApi, authApi, projectApi } from '../../config/api';
+import { fakeApi, authApi, projectApi, formApi } from '../../config/api';
 
 export const test = () => dispatch => {
   dispatch({
@@ -23,6 +25,53 @@ export const fetchProj = () => async dispatch => {
   dispatch({
     type: FETCH_LIST_PROJ,
     payload: res.data
+  });
+};
+
+export const fetchForm = formName => async dispatch => {
+  let x = '';
+  switch (formName) {
+    case 'besoin sécurité':
+      x = 'besoinSec';
+      break;
+    case 'homologation':
+      x = 'homologation';
+      break;
+    case 'impacts potentiels':
+      x = 'impacts';
+      break;
+    case 'menaces potentielles':
+      x = 'menaces';
+      break;
+    case 'importances des vulnérabilités':
+      x = 'importanceVuln';
+      break;
+    default:
+      return;
+  }
+  const res = await formApi.get('/' + x);
+  console.log(res.data);
+  if (res.data) {
+    dispatch({
+      type: FETCH_FORM,
+      payload: res.data
+    });
+  }
+};
+
+export const createForm = (formName, values) => async dispatch => {
+  let x = '';
+  switch (formName) {
+    case 'besoin sécurité':
+      x = 'besoinSec';
+      break;
+    default:
+      break;
+  }
+  await formApi.post('/' + x, values);
+
+  dispatch({
+    type: CREATE_FORM
   });
 };
 

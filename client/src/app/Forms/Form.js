@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Identification from './components/Identification';
 import BesoinSec from './components/BesoinSec';
 import Signup from './components/Signup';
 import Login from './components/Login';
-import { login, signout, signup, autolog } from '../../redux/actions';
+import {
+  login,
+  signout,
+  signup,
+  autolog,
+  fetchForm
+} from '../../redux/actions';
 import { connect } from 'react-redux';
 import Init from './components/Init';
 import UpdateProjName from './components/UpdateProjName';
 import ImpactsPotentiels from './components/ImpactsPotentiels';
 import ImportancesVuln from './components/ImportancesVuln';
 import MenacesPotentiels from './components/MenacesPotentiels';
+import requireAuth from './components/requireAuth';
 
 const Form = props => {
   const [send, setSend] = useState(false);
+  useEffect(() => {
+    if (props.formName) {
+      props.fetchForm(props.formName);
+    }
+  }, [props.formName]);
   const renderForm = formName => {
     switch (formName) {
       case 'identification':
@@ -37,32 +49,11 @@ const Form = props => {
           />
         );
       case 'impacts potentiels':
-        return (
-          <ImpactsPotentiels
-            values={props.values}
-            setSend={setSend}
-            send={send}
-            quit={props.quit}
-          />
-        );
-      case 'importances vulnérabilités':
-        return (
-          <ImportancesVuln
-            values={props.values}
-            setSend={setSend}
-            send={send}
-            quit={props.quit}
-          />
-        );
-      case 'menaces potentiels':
-        return (
-          <MenacesPotentiels
-            values={props.values}
-            setSend={setSend}
-            send={send}
-            quit={props.quit}
-          />
-        );
+        return <BesoinSec setSend={setSend} send={send} quit={props.quit} />;
+      case 'importances des vulnérabilités':
+        return <BesoinSec setSend={setSend} send={send} quit={props.quit} />;
+      case 'menaces potentielles':
+        return <BesoinSec setSend={setSend} send={send} quit={props.quit} />;
       default:
         break;
     }
@@ -103,4 +94,6 @@ const Form = props => {
   );
 };
 
-export default connect(null, { autolog, login, signout, signup })(Form);
+export default connect(null, { autolog, login, signout, signup, fetchForm })(
+  requireAuth(Form)
+);
