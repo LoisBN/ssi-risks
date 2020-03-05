@@ -38,11 +38,9 @@ const Main = ({ fetchProj, projects, auth }) => {
         </button>
       )}{' '}
       {auth.admin && (
-        <button className='button is-dark'>
-          <Link to='/admin' style={{ color: 'white' }}>
-            Administration
-          </Link>
-        </button>
+        <Link to='/admin' style={{ color: 'white' }}>
+          <button className='button is-dark'>Administration</button>
+        </Link>
       )}
       <br />
       <br />

@@ -4,13 +4,9 @@ import { connect } from 'react-redux';
 
 function requireAdmin(ChildComponent) {
   const RequireAdmin = props => {
-    useEffect(() => {
-      setTimeout(() => {
-        if (!props.auth.admin) {
-          history.push('/');
-        }
-      }, 0);
-    }, [props.auth.admin]);
+    setTimeout(() => {
+      if (!props.auth.admin) history.push('/');
+    }, 500);
 
     return <ChildComponent />;
   };

@@ -65,10 +65,19 @@ export const createForm = (formName, values) => async dispatch => {
     case 'besoin sécurité':
       x = 'besoinSec';
       break;
+    case 'impacts potentiels':
+      x = 'impacts';
+      break;
+    case 'menaces potentielles':
+      x = 'menaces';
+      break;
+    case 'importance des vulnérabilités':
+      x = 'importanceVuln';
+      break;
     default:
       break;
   }
-  await formApi.post('/' + x, values);
+  await formApi.post('/' + x, { ...values, name: x });
 
   dispatch({
     type: CREATE_FORM

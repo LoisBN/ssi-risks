@@ -30,11 +30,11 @@ func BesoinSecForm(w http.ResponseWriter,req *http.Request)  {
         }
         err = json.Unmarshal(bs,&f)
         fmt.Println(f)
-        err = db.Find(bson.M{"name":"besoin_sécurité"}).One(&i)
+        err = db.Find(bson.M{"name":"besoinSec"}).One(&i)
         if err != nil {
             err = db.Insert(&f)
         } else {
-            err = db.Update(bson.M{"name":"besoin_sécurité"},f)
+            err = db.Update(bson.M{"name":"besoinSec"},f)
             if err != nil {
                 log.Println(err.Error())
                 http.Error(w,err.Error(),http.StatusInternalServerError)
@@ -43,7 +43,7 @@ func BesoinSecForm(w http.ResponseWriter,req *http.Request)  {
         }
     case "GET":
         var f Form
-        err := db.Find(bson.M{"name":"besoin_sécurité"}).One(&f)
+        err := db.Find(bson.M{"name":"besoinSec"}).One(&f)
         if err != nil {
             log.Println(err.Error())
             http.Error(w,"from here"+err.Error(),http.StatusInternalServerError)
@@ -114,11 +114,11 @@ func ImpactsForm(w http.ResponseWriter,req *http.Request)  {
         }
         err = json.Unmarshal(bs,&f)
         fmt.Println(f)
-        err = db.Find(bson.M{"name":"impacts_potentiels"}).One(&i)
+        err = db.Find(bson.M{"name":"impacts"}).One(&i)
         if err != nil {
             err = db.Insert(&f)
         } else {
-            err = db.Update(bson.M{"name":"impacts_potentiels"},f)
+            err = db.Update(bson.M{"name":"impacts"},f)
             if err != nil {
                 log.Println(err.Error())
                 http.Error(w,err.Error(),http.StatusInternalServerError)
@@ -127,7 +127,7 @@ func ImpactsForm(w http.ResponseWriter,req *http.Request)  {
         }
     case "GET":
         var f Form
-        err := db.Find(bson.M{"name":"impacts_potentiels"}).One(&f)
+        err := db.Find(bson.M{"name":"impacts"}).One(&f)
         if err != nil {
             log.Println(err.Error())
             http.Error(w,"from here"+err.Error(),http.StatusInternalServerError)
@@ -156,11 +156,11 @@ func MenacesForm(w http.ResponseWriter,req *http.Request)  {
         }
         err = json.Unmarshal(bs,&f)
         fmt.Println(f)
-        err = db.Find(bson.M{"name":"menaces_potentielles"}).One(&i)
+        err = db.Find(bson.M{"name":"menaces"}).One(&i)
         if err != nil {
             err = db.Insert(&f)
         } else {
-            err = db.Update(bson.M{"name":"menaces_potentielles"},f)
+            err = db.Update(bson.M{"name":"menaces"},f)
             if err != nil {
                 log.Println(err.Error())
                 http.Error(w,err.Error(),http.StatusInternalServerError)
@@ -169,7 +169,7 @@ func MenacesForm(w http.ResponseWriter,req *http.Request)  {
         }
     case "GET":
         var f Form
-        err := db.Find(bson.M{"name":"menaces_potentielles"}).One(&f)
+        err := db.Find(bson.M{"name":"menaces"}).One(&f)
         if err != nil {
             log.Println(err.Error())
             http.Error(w,"from here"+err.Error(),http.StatusInternalServerError)
@@ -198,11 +198,11 @@ func ImportanceVulnForm(w http.ResponseWriter,req *http.Request)  {
         }
         err = json.Unmarshal(bs,&f)
         fmt.Println(f)
-        err = db.Find(bson.M{"name":"importance_vulnérabilités"}).One(&i)
+        err = db.Find(bson.M{"name":"importanceVuln"}).One(&i)
         if err != nil {
             err = db.Insert(&f)
         } else {
-            err = db.Update(bson.M{"name":"importance_vulnérabilités"},f)
+            err = db.Update(bson.M{"name":"importanceVuln"},f)
             if err != nil {
                 log.Println(err.Error())
                 http.Error(w,err.Error(),http.StatusInternalServerError)
@@ -211,7 +211,7 @@ func ImportanceVulnForm(w http.ResponseWriter,req *http.Request)  {
         }
     case "GET":
         var f Form
-        err := db.Find(bson.M{"name":"importance_vulnérabilités"}).One(&f)
+        err := db.Find(bson.M{"name":"importanceVuln"}).One(&f)
         if err != nil {
             log.Println(err.Error())
             http.Error(w,"from here"+err.Error(),http.StatusInternalServerError)
