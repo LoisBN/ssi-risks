@@ -79,10 +79,41 @@ func GetProject(w http.ResponseWriter,req *http.Request)  {
 			DB: 1,
 		})
 		var p = make(map[string]interface{})
+		var s interface{}
+		var t interface{}
+		var u interface{}
+		var v interface{}
 		for _,key := range client.Keys(name).Val() {
-			p[key] = client.HGetAll(key).Val()
+			//p[key] = client.HGetAll(key).Val()
+			err := getSession().DB("SSI").C("besoinSec").Find(bson.M{"projectName":key}).All(&s)
+			if err != nil {
+				log.Println(err.Error())
+				http.Error(w,err.Error(),http.StatusInternalServerError)
+				return
+			}
+			err = getSession().DB("SSI").C("besoinSec").Find(bson.M{"projectName":key}).All(&s)
+			if err != nil {
+				log.Println(err.Error())
+				http.Error(w,err.Error(),http.StatusInternalServerError)
+				return
+			}
+			err = getSession().DB("SSI").C("besoinSec").Find(bson.M{"projectName":key}).All(&s)
+			if err != nil {
+				log.Println(err.Error())
+				http.Error(w,err.Error(),http.StatusInternalServerError)
+				return
+			}
+			err = getSession().DB("SSI").C("besoinSec").Find(bson.M{"projectName":key}).All(&s)
+			if err != nil {
+				log.Println(err.Error())
+				http.Error(w,err.Error(),http.StatusInternalServerError)
+				return
+			}
+			p["besoinSec"]=s
+			p["besoinSec"]=t
+			p["besoinSec"]=u
+			p["besoinSec"]=v
 		}
-
 		fmt.Println(p)
 		json.NewEncoder(w).Encode(&p)
 	}
