@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-redis/redis/v7"
+	"github.com/go-redis/redis"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2/bson"
@@ -52,7 +52,7 @@ func Login(w http.ResponseWriter,req *http.Request)  {
         }
 
         client := redis.NewClient(&redis.Options{
-            Addr: ":6379",
+            Addr: "redis:6379",
             Password: "",
             DB: 0,
         })
@@ -100,7 +100,7 @@ func Autolog(w http.ResponseWriter,req *http.Request)  {
     }
 
     client := redis.NewClient(&redis.Options{
-        Addr: ":6379",
+        Addr: "redis:6379",
         Password: "",
         DB: 0,
     })

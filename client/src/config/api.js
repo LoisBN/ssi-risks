@@ -5,16 +5,16 @@ export const fakeApi = axios.create({
 });
 
 export const authApi = axios.create({
-  baseURL: 'http://localhost:8100'
+  baseURL: '/auth'
 });
 
 export const projectApi = axios.create({
-  baseURL: 'http://localhost:8000'
+  baseURL: '/service-project'
 });
 
 export const formApi = axios.create({
-  baseURL: 'http://localhost:8300'
+  baseURL: '/service-form'
 });
 export const formulaApi = axios.create({
-  baseURL: 'http://localhost:8400'
+  baseURL: '/service-formula'
 });

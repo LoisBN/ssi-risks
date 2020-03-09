@@ -130,7 +130,7 @@ func updateProject(w http.ResponseWriter,req *http.Request) {
             }
             fmt.Println(x)
             client := redis.NewClient(&redis.Options{
-                Addr: ":6379",
+                Addr: "redis:6379",
                 Password: "",
                 DB: 1,
             })
@@ -169,7 +169,7 @@ func updateProject(w http.ResponseWriter,req *http.Request) {
             }
             fmt.Println(x)
             client := redis.NewClient(&redis.Options{
-                Addr: ":6379",
+                Addr: "redis:6379",
                 Password: "",
                 DB: 1,
             })
@@ -208,7 +208,7 @@ func updateProject(w http.ResponseWriter,req *http.Request) {
             }
             fmt.Println(x)
             client := redis.NewClient(&redis.Options{
-                Addr: ":6379",
+                Addr: "redis:6379",
                 Password: "",
                 DB: 1,
             })
@@ -247,14 +247,14 @@ func updateProject(w http.ResponseWriter,req *http.Request) {
             }
             fmt.Println(x)
             client := redis.NewClient(&redis.Options{
-                Addr: ":6379",
+                Addr: "redis:6379",
                 Password: "",
                 DB: 1,
             })
             client.HSet(projectName,"importanceVuln",x)
         }
         client := redis.NewClient(&redis.Options{
-            Addr: ":6379",
+            Addr: "redis:6379",
             Password: "",
             DB: 1,
         })

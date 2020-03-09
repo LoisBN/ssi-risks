@@ -9,7 +9,7 @@ const TableContent = props => {
         title='nom du projet'
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('update project name');
+          props.setFormName({ type: 'update project name' });
           props.setValues(props.id);
         }}>
         {props.id}
@@ -17,20 +17,11 @@ const TableContent = props => {
       <td
         title='initiateur'
         onClick={() => {
-          props.setDisplayModal(true);
-          props.setFormName('besoin sécurité');
-          props.setValues(props.id);
+          props.setValues(props.name);
         }}>
         {props.name}
       </td>
-      <td
-        title='homologation'
-        onClick={() => {
-          props.setDisplayModal(true);
-          props.setFormName('homologation');
-        }}>
-        {props.homologation}
-      </td>
+      <td title='homologation'>{props.homologation}</td>
       <td
         data-tooltip='Tooltip Text'
         onClick={() => {

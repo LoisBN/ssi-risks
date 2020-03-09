@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go-redis/redis/v7"
+	"github.com/go-redis/redis"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -33,14 +33,19 @@ func NewProject(w http.ResponseWriter,req *http.Request) {
 			return
 		}
 		client := redis.NewClient(&redis.Options{
-			Addr: ":6379",
+			Addr: "redis:6379",
 			Password: "",
 			DB: 1,
 		})
 		fmt.Println(u)
 		////x := `{"`+u.Name+`":"`+u.Initiator+`"}`
-		
-		client.HSet(u.Name,"name",u.Name,"initiator",u.Initiator,"homologation",0,"besoinSec",0,"menaces",0,"impacts",0,"importanceVuln",0)
+		client.HSet(u.Name,"name",u.Name)
+		client.HSet(u.Name,"initiator",u.Initiator)
+		client.HSet(u.Name,"homologation",0)
+		client.HSet(u.Name,"besoinSec",0)
+		client.HSet(u.Name,"menaces",0)
+		client.HSet(u.Name,"impacts",0)
+		client.HSet(u.Name,"importanceVuln",0)
 	}
 }
 
@@ -51,7 +56,7 @@ func GetAll(w http.ResponseWriter,req *http.Request) {
 	}
 	if req.Method == "GET" {
 		client := redis.NewClient(&redis.Options{
-			Addr: ":6379",
+			Addr: "redis:6379",
 			Password: "",
 			DB: 1,
 		})
@@ -130,7 +135,7 @@ func UpdateProject(w http.ResponseWriter,req *http.Request)  {
 		name := params["name"]
 
 		client := redis.NewClient(&redis.Options{
-			Addr: ":6379",
+			Addr: "redis:6379",
 			Password: "",
 			DB: 1,
 		})
@@ -148,7 +153,8 @@ func UpdateProject(w http.ResponseWriter,req *http.Request)  {
 			fmt.Println(err.Error())
 			return
 		}
-		client.HSet(name,"initiator",u.Initiator,"name",u.Name)
+		client.HSet(name,"initiator",u.Initiator)
+		client.HSet(name,"name",u.Name)
 		}
 	}
 }
@@ -162,7 +168,7 @@ func DeleteProject(w http.ResponseWriter,req *http.Request)  {
 	name := params["name"]
 
 	client := redis.NewClient(&redis.Options{
-		Addr: ":6379",
+		Addr: "redis:6379",
 		Password: "",
 		DB: 1,
 	})
@@ -179,7 +185,7 @@ func SaveProject(w http.ResponseWriter,req *http.Request) {
 		name := params["name"]
 
 		client := redis.NewClient(&redis.Options{
-			Addr: ":6379",
+			Addr: "redis:6379",
 			Password: "",
 			DB: 1,
 		})

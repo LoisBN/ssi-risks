@@ -13,6 +13,14 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
+const (
+	hosts      = "mongodb:27017"
+	database   = "db"
+	username   = ""
+	password   = ""
+	collection = "jobs"
+)
+
 func main()  {
     var wait time.Duration
 
@@ -56,12 +64,19 @@ func main()  {
 }
 
 func getSession() *mgo.Session {
-	session, err := mgo.Dial("mongodb://localhost:27017")
-	if err != nil {
-        log.Println(err.Error())
-		return nil
+	info := &mgo.DialInfo{
+		Addrs:    []string{hosts},
+		Timeout:  60 * time.Second,
+		Database: database,
+		Username: username,
+		Password: password,
 	}
-	return session
+
+	s, err := mgo.DialWithInfo(info)
+	if err != nil {
+		log.Println("erreur mongo")
+	}
+	return s
 }
 
 func setupResponse(w *http.ResponseWriter, req *http.Request) {

@@ -58,7 +58,7 @@ const Main = ({
         <input
           style={{ width: '180px', height: '40px' }}
           type='search'
-          placeholder="filter les projets par l'initiateur"
+          placeholder='filter les projets par nom'
           value={filter}
           onChange={e => setFilter(e.target.value.toLowerCase())}
         />
@@ -134,7 +134,7 @@ const Main = ({
                     </tr>
                   </tfoot>
                   <tbody className='custom-tbody'>
-                    {savedProjects.length > 0 ? (
+                    {savedProjects && savedProjects.length > 0 ? (
                       savedProjects.map((val, id) => {
                         console.log(val);
                         return (

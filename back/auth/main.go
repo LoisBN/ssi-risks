@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -11,6 +12,14 @@ import (
 
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2"
+)
+
+const (
+	hosts      = "mongodb:27017"
+	database   = "db"
+	username   = ""
+	password   = ""
+	collection = "jobs"
 )
 
 func main()  {
@@ -63,12 +72,19 @@ func main()  {
 }
 
 func getSession() *mgo.Session {
-    session,err := mgo.Dial("mongodb://localhost:27017")
-    if err != nil {
-        log.Println(err.Error())
-        return nil
-    }
-    return session
+	info := &mgo.DialInfo{
+		Addrs:    []string{hosts},
+		Timeout:  60 * time.Second,
+		Database: database,
+		Username: username,
+		Password: password,
+	}
+
+	s, err := mgo.DialWithInfo(info)
+	if err != nil {
+		fmt.Println("erreur mongo")
+	}
+	return s
 }
 
 func setupResponse(w *http.ResponseWriter, req *http.Request) {

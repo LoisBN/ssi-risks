@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-redis/redis/v7"
+	"github.com/go-redis/redis"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2/bson"
@@ -73,7 +73,7 @@ func Signup(w http.ResponseWriter,req *http.Request) {
 
     err = getSession().DB("SSI").C("users").Insert(p)
     client := redis.NewClient(&redis.Options{
-        Addr: ":6379",
+        Addr: "redis:6379",
         Password: "",
         DB: 0,
     })
