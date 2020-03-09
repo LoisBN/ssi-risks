@@ -26,7 +26,7 @@ const Auth = props => {
             className='to-left button'
             onClick={() => {
               setDisplayModal(true);
-              setFormName('signup');
+              setFormName({ type: 'signup', name: 'signup' });
             }}>
             signup
           </button>{' '}
@@ -36,7 +36,7 @@ const Auth = props => {
             className='to-left button'
             onClick={() => {
               setDisplayModal(true);
-              setFormName('login');
+              setFormName({ type: 'login', name: 'login' });
             }}>
             login
           </button>

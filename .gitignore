@@ -26,3 +26,6 @@ client/yarn-error.log*
 
 back/vendor/*
 back/Gopkg.lock
+back/auth/auth
+back/service-project/service-project
+back/service-form/service-form

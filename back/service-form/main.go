@@ -26,6 +26,8 @@ func main()  {
     r.HandleFunc("/impacts",ImpactsForm)
     r.HandleFunc("/menaces",MenacesForm)
     r.HandleFunc("/importanceVuln",ImportanceVulnForm)
+    r.HandleFunc("/save/{name}",saveFormData)
+    r.HandleFunc("/fetch/{name}",fetchFormValue)
 
     srv := &http.Server{
         Handler: r,

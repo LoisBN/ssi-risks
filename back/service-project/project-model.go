@@ -2,12 +2,12 @@ package main
 
 type Project struct{
 	Name string
-	Initiator string 
-	Homologation int 
-	BesoinSec Form
-	ImpactsPotentiels Form
-	MenacesPotentiels Form
-	ImportancesVuln Form
+	Initiator string
+	Homologation string
+	BesoinSec string
+	Impacts string
+	Menaces string
+	ImportanceVuln string
 }
 
 type Form map[string]Question

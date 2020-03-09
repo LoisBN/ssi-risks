@@ -39,7 +39,8 @@ func NewProject(w http.ResponseWriter,req *http.Request) {
 		})
 		fmt.Println(u)
 		////x := `{"`+u.Name+`":"`+u.Initiator+`"}`
-		client.HSet(u.Name,"name",u.Name,"initiator",u.Initiator)
+		
+		client.HSet(u.Name,"name",u.Name,"initiator",u.Initiator,"homologation",0,"besoinSec",0,"menaces",0,"impacts",0,"importanceVuln",0)
 	}
 }
 
@@ -147,8 +148,7 @@ func UpdateProject(w http.ResponseWriter,req *http.Request)  {
 			fmt.Println(err.Error())
 			return
 		}
-		client.Del(name)
-		client.HSet(u.Name,"initiator",u.Initiator,"name",u.Name)
+		client.HSet(name,"initiator",u.Initiator,"name",u.Name)
 		}
 	}
 }
@@ -174,58 +174,74 @@ func SaveProject(w http.ResponseWriter,req *http.Request) {
 	setupResponse(&w,req)
 	if req.Method == "OPTIONS" {
 		return
-	}
-	params := mux.Vars(req)
-	name := params["name"]
+	} else if req.Method == "POST" {
+		params := mux.Vars(req)
+		name := params["name"]
 
-	client := redis.NewClient(&redis.Options{
-		Addr: ":6379",
-		Password: "",
-		DB: 1,
-	})
+		client := redis.NewClient(&redis.Options{
+			Addr: ":6379",
+			Password: "",
+			DB: 1,
+		})
 
-	project := client.HGetAll(name)
-	if project.Val()["name"] == "" {
-		log.Println("this project does not exist")
-		http.Error(w,"this project does not exist",http.StatusNotFound)
-		err := getSession().DB("SSI").C("projects").Remove(bson.M{"name":name})
-		if err != nil {
-			log.Println(err.Error())
+		project := client.HGetAll(name)
+		if project.Val()["name"] == "" {
+			log.Println("this project does not exist")
+			http.Error(w,"this project does not exist",http.StatusNotFound)
+			err := getSession().DB("SSI").C("projects").Remove(bson.M{"name":name})
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
 			return
 		}
-		return
-	}
-	p := Project{
-		Name: project.Val()["name"],
-		Initiator: project.Val()["initiator"],
-	}
-	var f Project
-	err := getSession().DB("SSI").C("projects").Find(bson.M{"name":p.Name}).One(&f)
-	if err != nil {
-		log.Println("erreur")
-		err = getSession().DB("SSI").C("projects").Insert(&p)
-		if err != nil {
-			log.Println(err.Error())
-			return
+		p := Project{
+			Name: project.Val()["name"],
+			Initiator: project.Val()["initiator"],
+			Homologation : project.Val()["homologation"],
+			BesoinSec : project.Val()["besoinSec"],
+			Menaces : project.Val()["menaces"],
+			Impacts : project.Val()["impacts"],
+			ImportanceVuln : project.Val()["importanceVuln"],
 		}
-	} else if f.Name == "" {
-		err = getSession().DB("SSI").C("projects").Insert(&p)
+		var f Project
+		err := getSession().DB("SSI").C("projects").Find(bson.M{"name":p.Name}).One(&f)
 		if err != nil {
-			log.Println(err.Error())
-			return
-		}
-	} else {
-		err = getSession().DB("SSI").C("projects").Update(bson.M{"name":p.Name},&p)
-		if err != nil {
-			log.Println(err.Error())
-			return
+			log.Println("erreur")
+			err = getSession().DB("SSI").C("projects").Insert(&p)
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
+		} else if f.Name == "" {
+			err = getSession().DB("SSI").C("projects").Insert(&p)
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
+		} else {
+			err = getSession().DB("SSI").C("projects").Update(bson.M{"name":p.Name},&p)
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
 		}
 	}
 }
 
-func getAllFromDB(w http.ResponseWriter,req *http.Request)  {
+func GetAllFromDB(w http.ResponseWriter,req *http.Request)  {
 	setupResponse(&w,req)
 	if req.Method == "OPTIONS" {
 		return
+	} else if req.Method == "GET" {
+		var f []interface{}
+		err := getSession().DB("SSI").C("projects").Find(nil).All(&f)
+		if err != nil {
+			log.Println(err.Error())
+			http.Error(w,err.Error(),http.StatusNotFound)
+			return
+		}
+		fmt.Println(f)
+		json.NewEncoder(w).Encode(f)
 	}
 }

@@ -8,9 +8,17 @@ import {
   PROJ_UPDATED,
   AUTOLOGIN,
   FETCH_FORM,
-  CREATE_FORM
+  CREATE_FORM,
+  SAVE_FORM,
+  FETCH_SAVED_PROJ
 } from './types';
-import { fakeApi, authApi, projectApi, formApi } from '../../config/api';
+import {
+  fakeApi,
+  authApi,
+  projectApi,
+  formApi,
+  formulaApi
+} from '../../config/api';
 
 export const test = () => dispatch => {
   dispatch({
@@ -21,7 +29,7 @@ export const test = () => dispatch => {
 
 export const fetchProj = () => async dispatch => {
   const res = await projectApi.get('/projects');
-  console.log('projects', res.data);
+  const res2 = await console.log('projects', res.data);
   dispatch({
     type: FETCH_LIST_PROJ,
     payload: res.data
@@ -81,6 +89,78 @@ export const createForm = (formName, values) => async dispatch => {
 
   dispatch({
     type: CREATE_FORM
+  });
+};
+
+export const sendForm = (formName, initiator, values) => async dispatch => {
+  console.log('from actions', formName.name);
+  let x = '';
+  switch (formName.type) {
+    case 'besoin sécurité':
+      x = 'besoinSec';
+      break;
+    case 'impacts potentiels':
+      x = 'impacts';
+      break;
+    case 'menaces potentielles':
+      x = 'menaces';
+      break;
+    case 'importances des vulnérabilités':
+      x = 'importanceVuln';
+      break;
+    default:
+      break;
+  }
+  await formApi.post(`/save/${x}`, {
+    ...values,
+    formName: formName.name,
+    initiator
+  });
+  dispatch({
+    type: SAVE_FORM
+  });
+};
+
+export const updateFormVal = (formField, formName) => async dispatch => {
+  let x = '';
+  switch (formField) {
+    case 'besoin sécurité':
+      x = 'besoinSec';
+      break;
+    case 'impacts potentiels':
+      x = 'impacts';
+      break;
+    case 'menaces potentielles':
+      x = 'menaces';
+      break;
+    case 'importances des vulnérabilités':
+      x = 'importanceVuln';
+      break;
+    default:
+      break;
+  }
+  await formulaApi.get(`/update/${x}/${formName}`);
+  const res = await projectApi.get('/projects');
+  dispatch({
+    type: FETCH_LIST_PROJ,
+    payload: res.data
+  });
+};
+
+export const saveProject = name => async dispatch => {
+  await projectApi.post(`/project/save/${name}`);
+  const res = await projectApi.get('/projects/fetchSaved');
+  dispatch({
+    type: FETCH_SAVED_PROJ,
+    payload: res.data
+  });
+};
+
+export const fetchSavedProjects = () => async dispatch => {
+  const res = await projectApi.get('/projects/fetchSaved');
+  dispatch({
+    type: FETCH_SAVED_PROJ,
+    payload: res.data
   });
 };
 

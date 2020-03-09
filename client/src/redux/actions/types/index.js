@@ -8,3 +8,5 @@ export const PROJ_UPDATED = 'PROJ_UPDATED';
 export const AUTOLOGIN = 'AUTOLOGIN';
 export const FETCH_FORM = 'FETCH_FORM';
 export const CREATE_FORM = 'CREATE_FORM';
+export const SAVE_FORM = 'SAVE_FORM';
+export const FETCH_SAVED_PROJ = 'FETCH_SAVED_PROJ';

@@ -2,11 +2,7 @@ package main
 
 import (
 	"fmt"
-	_ "fmt"
-	_ "log"
-	_ "net"
 	"os"
-	_ "os"
 	"os/exec"
 
 	"github.com/urfave/cli"
@@ -31,9 +27,7 @@ func main()  {
             Flags: myFlags,
             Action: func(c *cli.Context) error {
                 fmt.Println("------Lolo is launching the services for you------\n")
-                
                 cmd := exec.Command("ls","-l")
-                cmd.Path = "/"
                 cmd.Stdout = os.Stdout
                 cmd.Run()
                 fmt.Println("\n------ done with love ------")

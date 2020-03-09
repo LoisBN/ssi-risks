@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { saveProject } from '../../../../redux/actions';
 
 const TableContent = props => {
   return (
@@ -27,43 +29,47 @@ const TableContent = props => {
           props.setDisplayModal(true);
           props.setFormName('homologation');
         }}>
-        38
+        {props.homologation}
       </td>
       <td
         data-tooltip='Tooltip Text'
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('besoin sécurité');
+          props.setFormName({ type: 'besoin sécurité', name: props.id });
         }}>
-        23
+        {props.besoinSec}
       </td>
       <td
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('impacts potentiels');
+          props.setFormName({ type: 'impacts potentiels', name: props.id });
         }}>
-        12
+        {props.impacts}
       </td>
       <td
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('menaces potentielles');
+          props.setFormName({ type: 'menaces potentielles', name: props.id });
         }}>
-        3
+        {props.menaces}
       </td>
       <td
         onClick={() => {
           props.setDisplayModal(true);
-          props.setFormName('importances des vulnérabilités');
+          props.setFormName({
+            type: 'importances des vulnérabilités',
+            name: props.id
+          });
         }}>
-        68
+        {props.importanceVuln}
       </td>
       <td
         style={{ borderColor: 'white', cursor: 'pointer' }}
         className='is-dark'
         onClick={() => {
-          props.setDisplayModal(true);
-          props.setFormName('sauvegarder');
+          //props.setDisplayModal(true);
+          //props.setFormName( 'sauvegarder' );
+          props.saveProject(props.id);
         }}>
         <strong style={{ color: 'white' }}>Sauvegarder</strong>
       </td>
@@ -71,4 +77,4 @@ const TableContent = props => {
   );
 };
 
-export default TableContent;
+export default connect(null, { saveProject })(TableContent);

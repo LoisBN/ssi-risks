@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchProj } from '../../../redux/actions';
+import { fetchProj, fetchSavedProjects } from '../../../redux/actions';
 import { connect } from 'react-redux';
 import TableContent from './components/TableContent';
 import PackmanLoader from './components/PackmanLoader';
@@ -7,14 +7,24 @@ import TableFields from './components/TableFields';
 import BaremTable from './components/BaremTable';
 import Form from '../../Forms/Form';
 import { Link } from 'react-router-dom';
+import TableFinalContent from './components/TableFinalContent';
 
-const Main = ({ fetchProj, projects, auth }) => {
+const Main = ({
+  fetchProj,
+  savedProjects,
+  fetchSavedProjects,
+  projects,
+  auth
+}) => {
   const [formName, setFormName] = useState('');
   const [filter, setFilter] = useState('');
   const [values, setValues] = useState('');
   const [displayModal, setDisplayModal] = useState('false');
   useEffect(() => {
-    if (projects.length === 0) fetchProj();
+    if (projects.length === 0) {
+      fetchProj();
+      fetchSavedProjects();
+    }
   }, [projects]);
   return (
     <div className='section'>
@@ -32,7 +42,7 @@ const Main = ({ fetchProj, projects, auth }) => {
           className='button is-dark'
           onClick={() => {
             setDisplayModal(true);
-            setFormName('init');
+            setFormName({ type: 'init', name: 'init' });
           }}>
           Initier un projet
         </button>
@@ -55,6 +65,7 @@ const Main = ({ fetchProj, projects, auth }) => {
         <div className='columns'>
           <div className='column'>
             <div className='table-container'>
+              Projets en cours :
               <table className='table table-custom is-bordered is-striped is-narrow is-hoverable'>
                 <thead>
                   <TableFields />
@@ -74,6 +85,11 @@ const Main = ({ fetchProj, projects, auth }) => {
                             formName={formName}
                             setFormName={setFormName}
                             id={val.name}
+                            besoinSec={val.besoinSec}
+                            impacts={val.impacts}
+                            menaces={val.menaces}
+                            homologation={val.homologation}
+                            importanceVuln={val.importanceVuln}
                             name={val.initiator}
                             setValues={setValues}
                           />
@@ -92,6 +108,64 @@ const Main = ({ fetchProj, projects, auth }) => {
               </table>
             </div>
             <div className='column'>
+              <div className='table-container'>
+                Projets sauvegardés :
+                <table className='table table-custom is-bordered is-striped is-narrow is-hoverable'>
+                  <thead>
+                    <tr>
+                      <th>
+                        <abbr title='Position'>Projet</abbr>
+                      </th>
+                      <th>Initiateur</th>
+                      <th>
+                        <abbr title='Played'>Homologation</abbr>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>
+                        <abbr title='Position'>Projet</abbr>
+                      </th>
+                      <th>Initiateur</th>
+                      <th>
+                        <abbr title='Played'>Homologation</abbr>
+                      </th>
+                    </tr>
+                  </tfoot>
+                  <tbody className='custom-tbody'>
+                    {savedProjects.length > 0 ? (
+                      savedProjects.map((val, id) => {
+                        console.log(val);
+                        return (
+                          <TableFinalContent
+                            key={id}
+                            setDisplayModal={setDisplayModal}
+                            formName={formName}
+                            setFormName={setFormName}
+                            id={val.name}
+                            besoinSec={val.besoinSec}
+                            impacts={val.impacts}
+                            menaces={val.menaces}
+                            homologation={val.homologation}
+                            importanceVuln={val.importanceVuln}
+                            name={val.initiator}
+                            setValues={setValues}
+                          />
+                        );
+                      })
+                    ) : (
+                      <>
+                        <tr>
+                          <PackmanLoader />
+                        </tr>
+                      </>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className='column'>
               <BaremTable />
             </div>
           </div>
@@ -103,7 +177,10 @@ const Main = ({ fetchProj, projects, auth }) => {
 
 const mapStateToProps = state => ({
   projects: state.projects,
-  auth: state.auth
+  auth: state.auth,
+  savedProjects: state.savedProjects
 });
 
-export default connect(mapStateToProps, { fetchProj })(Main);
+export default connect(mapStateToProps, { fetchProj, fetchSavedProjects })(
+  Main
+);
