@@ -31,7 +31,7 @@ func main() {
 	r := mux.NewRouter()
 	r.Use(mux.CORSMethodMiddleware(r))
 	r.HandleFunc("/project/init", NewProject).Methods("OPTION", "GET", "POST", "OPTIONS")
-	r.HandleFunc("/projects", GetAll).Methods("GET", "OPTIONS")
+	r.HandleFunc("/projects/get/{name}", GetAll).Methods("GET", "OPTIONS")
 	r.HandleFunc("/project/get/{name}", GetProject).Methods("GET", "OPTIONS")
 	r.HandleFunc("/project/update/{name}", UpdateProject).Methods("PUT", "PATCH", "OPTIONS")
 	r.HandleFunc("/project/delete/{name}", DeleteProject).Methods("GET", "OPTIONS")

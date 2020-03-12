@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import requireAdmin from './requireAdmin';
 import { createForm } from '../../redux/actions';
 import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
 import _ from 'lodash';
 
 const AdminPage = props => {
@@ -18,6 +19,7 @@ const AdminPage = props => {
   return (
     <div className='section'>
       <div className='container'>
+        <Link to='/'>home</Link>
         <form
           method='POST'
           encType='text/plain'
@@ -52,6 +54,7 @@ const AdminPage = props => {
                       <option>textarea</option>
                       <option>radio</option>
                       <option>checkbox</option>
+                      <option>date</option>
                     </select>
                   </div>
                   <div className='control'>

@@ -7,8 +7,8 @@ const BaremTable = () => {
         <thead>
           <tr>
             <td>Homologation sommaire</td>
-            <td>Homologation standard</td>
             <td>Homologation simplifiée</td>
+            <td>Homologation standard</td>
           </tr>
         </thead>
         <tbody>

@@ -1,10 +1,12 @@
-import { FETCH_FORM } from '../actions/types';
+import { FETCH_FORM, CLEAN_UP_FORM } from '../actions/types';
 
 export const form = (state = {}, action) => {
   switch (action.type) {
     case FETCH_FORM:
       return action.payload;
-    default:
+    case CLEAN_UP_FORM:
       return {};
+    default:
+      return state;
   }
 };

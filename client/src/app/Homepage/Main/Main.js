@@ -8,6 +8,7 @@ import BaremTable from './components/BaremTable';
 import Form from '../../Forms/Form';
 import { Link } from 'react-router-dom';
 import TableFinalContent from './components/TableFinalContent';
+import Recap from '../../Forms/components/Recap';
 
 const Main = ({
   fetchProj,
@@ -19,13 +20,12 @@ const Main = ({
   const [formName, setFormName] = useState('');
   const [filter, setFilter] = useState('');
   const [values, setValues] = useState('');
-  const [displayModal, setDisplayModal] = useState('false');
+  const [ displayModal, setDisplayModal ] = useState( 'false' );
+  const [ displayPanel, setDisplayPanel ] = useState( 'false' );
   useEffect(() => {
-    if (projects.length === 0) {
-      fetchProj();
-      fetchSavedProjects();
-    }
-  }, [projects]);
+    fetchProj();
+    fetchSavedProjects();
+  }, [auth]);
   return (
     <div className='section'>
       {
@@ -34,6 +34,14 @@ const Main = ({
           values={values}
           displayModal={displayModal}
           quit={setDisplayModal}
+        />
+      }
+      {
+        <Recap
+          formName={ formName }
+          values={ values }
+          displayPanel={ displayPanel }
+          quit={ setDisplayPanel }
         />
       }
       <button className='button is-dark'>Lister tous les projets</button>{' '}
@@ -74,7 +82,7 @@ const Main = ({
                   <TableFields />
                 </tfoot>
                 <tbody className='custom-tbody'>
-                  {Object.values(projects).length > 0 ? (
+                  {auth.authenticated && Object.values(projects).length > 0 ? (
                     Object.values(projects).map((val, id) => {
                       console.log(val);
                       if (val.name.toLowerCase().includes(filter)) {
@@ -140,15 +148,11 @@ const Main = ({
                         return (
                           <TableFinalContent
                             key={id}
-                            setDisplayModal={setDisplayModal}
+                            setDisplayPanel={setDisplayPanel}
                             formName={formName}
                             setFormName={setFormName}
-                            id={val.name}
-                            besoinSec={val.besoinSec}
-                            impacts={val.impacts}
-                            menaces={val.menaces}
+                            id={ val.name }
                             homologation={val.homologation}
-                            importanceVuln={val.importanceVuln}
                             name={val.initiator}
                             setValues={setValues}
                           />

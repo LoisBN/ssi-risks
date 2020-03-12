@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+var dbForm = getSession().DB("SSI").C("form")
 var dbBesoinSec = getSession().DB("SSI").C("besoinSec")
 var dbMenaces = getSession().DB("SSI").C("menaces")
 var dbImpacts = getSession().DB("SSI").C("impacts")
@@ -135,6 +137,7 @@ func updateProject(w http.ResponseWriter,req *http.Request) {
                 DB: 1,
             })
             client.HSet(projectName,"besoinSec",x)
+
         case "menaces":
             err := dbMenaces.Find(bson.M{"formName":projectName}).One(&f)
             if err != nil {
@@ -291,4 +294,147 @@ func calculateHomologation(fieldsVal ...int) int {
         x+=val
     }
     return x
+}
+
+func GetAnswer(w http.ResponseWriter,req *http.Request) {
+    setupResponse(&w,req)
+    if req.Method == "OPTIONS" {
+        return 
+    } else {
+        params := mux.Vars(req)
+        projectName := params["name"]
+        fieldName := params["field"]
+        log.Println(projectName)
+        var f map[string]interface{}
+        var x  = make(map[string]interface{})
+        switch fieldName {
+        case "besoinSec":
+            err := dbBesoinSec.Find(bson.M{"formName":projectName}).One(&f)
+            if err != nil {
+                log.Println(err.Error())
+                json.NewEncoder(w).Encode(map[string]string{
+                    "error":"no entry for this",
+                })
+                return
+            }
+            log.Println(f)
+            
+            for index,val := range f {
+                log.Println(index)
+                if index == "_id" || index == "formName" || index == "initiator" {
+                    log.Println("here")
+                    continue
+                } else {
+                    if _,ok := val.(map[string]interface{})["answer"];ok {
+                        x[index] = val.(map[string]interface{})["answer"]
+                    } else {
+                        var y = make(map[string]string)
+                        for i,v := range val.(map[string]interface{}) {
+                            y[i] = v.(map[string]interface{})["answer"].(string)
+                        }
+                        x[index] = y
+                    }
+                }
+            }
+            log.Println("here")
+            err = json.NewEncoder(w).Encode(x)
+            if err != nil {
+                log.Println(err.Error())
+                return
+            }
+        case "impacts":
+            err := dbImpacts.Find(bson.M{"formName":projectName}).One(&f)
+            if err != nil {
+                log.Println(err.Error())
+                json.NewEncoder(w).Encode(map[string]string{
+                    "error":"no entry for this",
+                })
+                return
+            }
+            for index,val := range f {
+                log.Println(index)
+                if index == "_id" || index == "formName" || index == "initiator" {
+                    log.Println("here")
+                    continue
+                } else {
+                    if _,ok := val.(map[string]interface{})["answer"];ok {
+                        x[index] = val.(map[string]interface{})["answer"]
+                    } else {
+                        var y = make(map[string]string)
+                        for i,v := range val.(map[string]interface{}) {
+                            y[i] = v.(map[string]interface{})["answer"].(string)
+                        }
+                        x[index] = y
+                    }
+                }
+            }
+            err = json.NewEncoder(w).Encode(&x)
+            if err != nil {
+                log.Println(err.Error())
+                return
+            }
+        case "menaces":
+            err := dbMenaces.Find(bson.M{"formName":projectName}).One(&f)
+            if err != nil {
+                log.Println(err.Error())
+                json.NewEncoder(w).Encode(map[string]string{
+                    "error":"no entry for this",
+                })
+                return
+            }
+            for index,val := range f {
+                log.Println(index)
+                if index == "_id" || index == "formName" || index == "initiator" {
+                    log.Println("here")
+                    continue
+                } else {
+                    if _,ok := val.(map[string]interface{})["answer"];ok {
+                        x[index] = val.(map[string]interface{})["answer"]
+                    } else {
+                        var y = make(map[string]string)
+                        for i,v := range val.(map[string]interface{}) {
+                            y[i] = v.(map[string]interface{})["answer"].(string)
+                        }
+                        x[index] = y
+                    }
+                }
+            }
+            err = json.NewEncoder(w).Encode(&x)
+            if err != nil {
+                log.Println(err.Error())
+                return
+            }
+        case "importanceVuln":
+            err := dbImportanceVuln.Find(bson.M{"formName":projectName}).One(&f)
+            if err != nil {
+                log.Println(err.Error())
+                json.NewEncoder(w).Encode(map[string]string{
+                    "error":"no entry for this",
+                })
+                return
+            }
+            for index,val := range f {
+                log.Println(index)
+                if index == "_id" || index == "formName" || index == "initiator" {
+                    log.Println("here")
+                    continue
+                } else {
+                    if _,ok := val.(map[string]interface{})["answer"];ok {
+                        x[index] = val.(map[string]interface{})["answer"]
+                    } else {
+                        var y = make(map[string]string)
+                        for i,v := range val.(map[string]interface{}) {
+                            y[i] = v.(map[string]interface{})["answer"].(string)
+                        }
+                        x[index] = y
+                    }
+                }
+            }
+            err = json.NewEncoder(w).Encode(&x)
+            if err != nil {
+                log.Println(err.Error())
+                return
+            }
+        }
+    }
 }

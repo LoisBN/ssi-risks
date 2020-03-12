@@ -10,7 +10,10 @@ import {
   FETCH_FORM,
   CREATE_FORM,
   SAVE_FORM,
-  FETCH_SAVED_PROJ
+  FETCH_SAVED_PROJ,
+  FETCH_ANSWER,
+  CLEAN_UP_ANSWER,
+  CLEAN_UP_FORM
 } from './types';
 import {
   fakeApi,
@@ -27,8 +30,8 @@ export const test = () => dispatch => {
   });
 };
 
-export const fetchProj = () => async dispatch => {
-  const res = await projectApi.get('/projects');
+export const fetchProj = () => async (dispatch,getState) => {
+  const res = await projectApi.get('/projects/get/'+ getState().auth.username);
   const res2 = await console.log('projects', res.data);
   dispatch({
     type: FETCH_LIST_PROJ,
@@ -36,7 +39,13 @@ export const fetchProj = () => async dispatch => {
   });
 };
 
-export const fetchForm = formName => async dispatch => {
+export const cleanupAnswer = () => dispatch  => {
+  dispatch( {
+    type: CLEAN_UP_ANSWER
+  })
+}
+
+export const fetchForm = (formName,name) => async dispatch => {
   let x = '';
   switch (formName) {
     case 'besoin sécurité':
@@ -57,15 +66,27 @@ export const fetchForm = formName => async dispatch => {
     default:
       return;
   }
-  const res = await formApi.get('/' + x);
-  console.log(res.data);
+  const res = await formApi.get( '/' + x );
   if (res.data) {
     dispatch({
       type: FETCH_FORM,
       payload: res.data
     });
   }
+  const res2 = await formulaApi.get( `/get/${ x }/${ name }` )
+  setTimeout( () => {
+    return;
+  },2000)
+  dispatch( {
+    type: FETCH_ANSWER,
+    payload: res2.data
+  } );
+  
 };
+
+export const cleanupForm = () => dispatch => {
+  dispatch({type : CLEAN_UP_FORM})
+}
 
 export const createForm = (formName, values) => async dispatch => {
   let x = '';
@@ -121,7 +142,7 @@ export const sendForm = (formName, initiator, values) => async dispatch => {
   });
 };
 
-export const updateFormVal = (formField, formName) => async dispatch => {
+export const updateFormVal = (formField, formName) => async (dispatch,getState) => {
   let x = '';
   switch (formField) {
     case 'besoin sécurité':
@@ -140,12 +161,37 @@ export const updateFormVal = (formField, formName) => async dispatch => {
       break;
   }
   await formulaApi.get(`/update/${x}/${formName}`);
-  const res = await projectApi.get('/projects');
+  const res = await projectApi.get('/projects/get/'+ getState().auth.username);
   dispatch({
     type: FETCH_LIST_PROJ,
     payload: res.data
   });
 };
+
+export const fetchAnswer = (formField,name) => async dispatch => {
+  let x = '';
+  switch (formField) {
+    case 'besoin sécurité':
+      x = 'besoinSec';
+      break;
+    case 'impacts potentiels':
+      x = 'impacts';
+      break;
+    case 'menaces potentielles':
+      x = 'menaces';
+      break;
+    case 'importances des vulnérabilités':
+      x = 'importanceVuln';
+      break;
+    default:
+      break;
+  }
+  const res = await formulaApi.get( `/get/${ x }/${ name }` )
+  dispatch( {
+    type: FETCH_ANSWER,
+    payload: res.data
+  })
+}
 
 export const saveProject = name => async dispatch => {
   await projectApi.post(`/project/save/${name}`);

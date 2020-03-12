@@ -29,7 +29,8 @@ func main()  {
 
     r := mux.NewRouter()
     r.Use(mux.CORSMethodMiddleware(r))
-    r.HandleFunc("/update/{field}/{name}",updateProject)
+	r.HandleFunc("/update/{field}/{name}",updateProject)
+	r.HandleFunc("/get/{field}/{name}",GetAnswer)
 
     srv := http.Server{
         Addr: ":8400",

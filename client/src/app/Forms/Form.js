@@ -8,7 +8,8 @@ import {
   signout,
   signup,
   autolog,
-  fetchForm
+  fetchForm,
+  fetchAnswer
 } from '../../redux/actions';
 import { connect } from 'react-redux';
 import Init from './components/Init';
@@ -18,12 +19,14 @@ import ImportancesVuln from './components/ImportancesVuln';
 import MenacesPotentiels from './components/MenacesPotentiels';
 import requireAuth from './components/requireAuth';
 import ReactDOM from 'react-dom';
+import Recap from './components/Recap';
 
 const Form = props => {
-  const [send, setSend] = useState(false);
+  const [ send, setSend ] = useState( false );
+  const [ disabled, setDisabled ] = useState( true );
   useEffect(() => {
-    if (props.formName.type) {
-      props.fetchForm(props.formName.type);
+    if (props.formName.type && props.formName.name) {
+      props.fetchForm( props.formName.type,props.formName.name );
     }
   }, [props.formName]);
   const renderForm = formName => {
@@ -39,7 +42,9 @@ const Form = props => {
             formName={props.formName}
             setSend={setSend}
             send={send}
-            quit={props.quit}
+            quit={ props.quit }
+            setDisabled={ setDisabled }
+            disabled={disabled}
           />
         );
       case 'signup':
@@ -63,16 +68,24 @@ const Form = props => {
             formName={props.formName}
             setSend={setSend}
             send={send}
-            quit={props.quit}
+            quit={ props.quit }
+            setDisabled={ setDisabled }
+            disabled={disabled}
           />
         );
+      case 'recap':
+        return (
+          <Recap quit={ props.quit } />
+        )
       case 'importances des vulnérabilités':
         return (
           <BesoinSec
             formName={props.formName}
             setSend={setSend}
             send={send}
-            quit={props.quit}
+            quit={ props.quit }
+            setDisabled={ setDisabled }
+            disabled={disabled}
           />
         );
       case 'menaces potentielles':
@@ -81,7 +94,9 @@ const Form = props => {
             formName={props.formName}
             setSend={setSend}
             send={send}
-            quit={props.quit}
+            quit={ props.quit }
+            setDisabled={ setDisabled }
+            disabled={disabled}
           />
         );
       default:
@@ -108,7 +123,8 @@ const Form = props => {
             </div>
             <footer className='modal-card-foot'>
               <button
-                onClick={setSend}
+                onClick={ setSend }
+                disabled={props.formName.type === "signup" ||props.formName.type === "login"||props.formName.type === 'update project name' || props.formName.type === "init" ? false : disabled}
                 type='submit'
                 className='button is-success'>
                 Submit
@@ -124,6 +140,6 @@ const Form = props => {
   );
 };
 
-export default connect(null, { autolog, login, signout, signup, fetchForm })(
+export default connect(null, {fetchAnswer, autolog, login, signout, signup, fetchForm })(
   requireAuth(Form)
 );

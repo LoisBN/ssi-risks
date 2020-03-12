@@ -138,7 +138,7 @@ const Signup = props => {
           </div>
           <p className='help is-danger'>{errorMessage.password}</p>
         </div>
-        <input ref={submit} type='submit' />
+        <input style={{display:"none"}} ref={submit} type='submit' />
       </form>
     </>
   );

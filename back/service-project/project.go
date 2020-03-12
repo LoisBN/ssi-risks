@@ -38,6 +38,10 @@ func NewProject(w http.ResponseWriter,req *http.Request) {
 			DB: 1,
 		})
 		fmt.Println(u)
+		x := client.HGet(u.Name,"name")
+		if x.Val() != "" {
+			return
+		}
 		////x := `{"`+u.Name+`":"`+u.Initiator+`"}`
 		client.HSet(u.Name,"name",u.Name)
 		client.HSet(u.Name,"initiator",u.Initiator)
@@ -55,6 +59,8 @@ func GetAll(w http.ResponseWriter,req *http.Request) {
 		return
 	}
 	if req.Method == "GET" {
+		params := mux.Vars(req)
+		user := params["name"]
 		client := redis.NewClient(&redis.Options{
 			Addr: "redis:6379",
 			Password: "",
@@ -62,7 +68,10 @@ func GetAll(w http.ResponseWriter,req *http.Request) {
 		})
 		var p = make(map[string]interface{})
 		for _,key := range client.Keys("*").Val() {
-			p[key] = client.HGetAll(key).Val()
+			x := client.HGet(key,"initiator")
+			if x.Val() == user {
+				p[key] = client.HGetAll(key).Val()
+			}
 		}
 
 		fmt.Println(p)
@@ -151,6 +160,9 @@ func UpdateProject(w http.ResponseWriter,req *http.Request)  {
 		err = json.Unmarshal(bs,&u)
 		if err != nil {
 			fmt.Println(err.Error())
+			return
+		}
+		if client.Get(name).Val() == u.Name {
 			return
 		}
 		client.HSet(name,"initiator",u.Initiator)

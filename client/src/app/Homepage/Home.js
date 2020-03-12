@@ -8,7 +8,7 @@ const Home = () => {
     <div>
       <Header
         page={{
-          title: "Niveau d'exigence ssi",
+          title: "Niveau d'exigences ssi",
           subtitle: 'Version de developpement'
         }}
       />

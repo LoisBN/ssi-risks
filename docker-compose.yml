@@ -11,7 +11,7 @@ services:
     build:
       context: ./nginx
     ports: 
-      - "80:80" 
+      - "12345:80" 
   client:
     container_name: "client"
     build: 

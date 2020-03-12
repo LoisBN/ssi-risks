@@ -10,3 +10,6 @@ export const FETCH_FORM = 'FETCH_FORM';
 export const CREATE_FORM = 'CREATE_FORM';
 export const SAVE_FORM = 'SAVE_FORM';
 export const FETCH_SAVED_PROJ = 'FETCH_SAVED_PROJ';
+export const CLEAN_UP_ANSWER = 'CLEAN_UP_ANSWER';
+export const FETCH_ANSWER = 'FETCH_ANSWER';
+export const CLEAN_UP_FORM = 'CLEAN_UP_FORM';
