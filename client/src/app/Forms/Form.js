@@ -129,7 +129,7 @@ const Form = props => {
                 className='button is-success'>
                 Submit
               </button>
-              <button type='reset' className='button'>
+              <button onClick={props.quit} type='reset' className='button'>
                 Cancel
               </button>
             </footer>

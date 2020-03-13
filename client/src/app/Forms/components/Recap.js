@@ -5,6 +5,7 @@ import {fetchAnswer} from "../../../redux/actions"
 const Recap = props => {
     
     const [ current, setCurrent ] = useState( "besoin sécurité" )
+    const [ filter, setFilter ] = useState( '' );
     useEffect( () => {
         console.log(props)
         if ( typeof props.formName == typeof {} ) {
@@ -23,7 +24,7 @@ const Recap = props => {
                 </p>
                 <div className="panel-block">
                     <p className="control has-icons-left">
-                    <input className="input" type="text" placeholder="Search" />
+                    <input onChange={e => setFilter(e.target.value)} value={filter} className="input" type="text" placeholder="Search" />
                     <span className="icon is-left">
                         <i className="fas fa-search" aria-hidden="true"></i>
                     </span>
@@ -36,7 +37,7 @@ const Recap = props => {
                     <a style={{textAlign:"center"}} onClick={()=> setCurrent('importances des vulnérabilités')} className={current === "importances des vulnérabilités"? "is-active":"" }> Importances des vulnérabilités</a>
                 </p>
                         { Object.keys( props.answer ).map( ( value ) => {
-                            if (typeof props.answer[value] === typeof {}) {
+                            if (typeof props.answer[value] === typeof {} && value.toLowerCase().includes( filter.toLowerCase() )) {
                                 return (
                                     <a className="panel-block">
                                         <span className="panel-icon">
@@ -47,18 +48,20 @@ const Recap = props => {
                                     </a>
                                 )
                             }
-                            return (
-                                <a className="panel-block">
-                                    <span className="panel-icon">
-                                    <i className="fas fa-code-branch" aria-hidden="true"></i>
-                                    </span>
+                            if ( value.toLowerCase().includes( filter.toLowerCase() ) ) {
+                                return (
+                                    <a className="panel-block">
+                                        <span className="panel-icon">
+                                            <i className="fas fa-code-branch" aria-hidden="true"></i>
+                                        </span>
                                     question : {value } <br />
-                                    réponse : {props.answer[value]}
-                                </a>
-                     )
+                                    réponse : {props.answer[ value ] }
+                                    </a>
+                                );
+                            } 
                 })}                
                 <div className="panel-block">
-                    <button className="button is-link is-outlined is-fullwidth">
+                    <button onClick={()=>setFilter('')} className="button is-link is-outlined is-fullwidth">
                     Reset all filters
                     </button>
                 </div>
