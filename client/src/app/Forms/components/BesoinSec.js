@@ -23,7 +23,7 @@ const BesoinSec = props => {
     console.log( props.answer[ "ceci est une question" ] );
   }, [ props.answer ] )
   useEffect( () => {
-    if ( Object.keys( form ).length === props.form.length - 2 ) props.setDisabled( false )
+    if ( Object.keys( form ).length >= props.form.length - 2 ) props.setDisabled( false )
     else props.setDisabled( true );
   })
   const handleSubmit = e => {
