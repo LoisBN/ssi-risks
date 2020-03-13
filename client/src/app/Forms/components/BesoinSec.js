@@ -53,7 +53,13 @@ const BesoinSec = props => {
                   const q = val.quotation;
                   switch ( val.type ) {
                     case 'input':
-                      console.log("this is the valI",valueI)
+                      console.log( "this is the valI", valueI )
+                      if (defaultAnswer[valueI] && !form[valueI]) {
+                        setForm( {
+                          ...form,
+                          [ valueI ]: { answer: defaultAnswer[valueI], quotation: q }
+                        } )
+                      }
                       return (
                         <div key={ index } class='field'>
                           <label className='label'>{ val.q }</label>
@@ -84,7 +90,14 @@ const BesoinSec = props => {
                       );
                       break;
                     case 'date':
-                      console.log("this is the valI",valueI)
+                      console.log( "this is the valI", valueI )
+                      if (defaultAnswer[valueI] && !form[valueI]) {
+                        setForm( {
+                          ...form,
+                          [ valueI ]: { answer: defaultAnswer[valueI], quotation: q }
+                        } )
+                      }
+          
                       return (
                         <div key={ index } class='field'>
                           <label className='label'>{ val.q }</label>
@@ -113,6 +126,12 @@ const BesoinSec = props => {
                         </div>
                       );
                     case 'textarea':
+                      if (defaultAnswer[valueI] && !form[valueI]) {
+                        setForm( {
+                          ...form,
+                          [ valueI ]: { answer: defaultAnswer[valueI], quotation: q }
+                        } )
+                      }
                       return (
                         <div key={ index } className='field'>
                           <label className='label'>{ val.q }</label>
@@ -142,27 +161,36 @@ const BesoinSec = props => {
                       break;
                     case 'radio':
                       const res = val.r.split( ',' );
-
+                      
                       return (
                         <div key={ index } class='field'>
                           <label className='label'>{ val.q }</label>
-                          <p style={{color:"blue"}}>previous value : { answer[ valueI ] ? defaultAnswer[ valueI ]  : "none" }</p>
+                          
                           <div className='control'>
                             { res.map( ( value, index ) => {
+                              if (defaultAnswer[valueI] && !form[valueI] && defaultAnswer[ valueI ] === value) {
+                                setForm( {
+                                  ...form,
+                                  [ valueI ]: { answer: defaultAnswer[valueI], quotation: ( q * index ).toString() }
+                                } )
+                              }
                               return (
                                 <>
                                   <input
                                     required
+                                    checked={ form[valueI] && form[ valueI ].answer === value ? true : false }
                                     type='radio'
                                     id={ value }
-                                    onChange={ e =>
-                                      setForm( {
-                                        ...form,
-                                        [ valueI ]: {
-                                          answer: e.target.value,
-                                          quotation: (q*index).toString()
-                                        }
-                                      } )
+                                    onChange={ e => {
+                                        e.target.value.checked = !e.target.value.checked;
+                                        setForm( {
+                                          ...form,
+                                          [ valueI ]: {
+                                            answer: e.target.value,
+                                            quotation: ( q * index ).toString()
+                                          }
+                                        } );
+                                      }
                                     }
                                     onFocus={ e =>
                                       setForm( {
@@ -188,13 +216,26 @@ const BesoinSec = props => {
                       break;
                     case 'checkbox':
                       const y = val.r.split( ',' );
-                      console.log("from the checkbox",defaultAnswer)
+                      console.log( "from the checkbox", defaultAnswer )
+                      
                       return (
                         <div key={ index } class='field'>
                           <label className='label'>{ val.q }</label>
-                          <p style={{color:"blue"}}>previous value : { answer[valueI] ? Object.values(defaultAnswer[valueI]).join() : "none" }</p>
+                          ////<p style={{color:"blue"}}>previous value : { answer[valueI] ? Object.values(defaultAnswer[valueI]).join() : "none" }</p>
                           <div className='control'>
                             { y.map( ( value, index ) => {
+                              if (!form[valueI] && !form[valueI][index]){
+                              setForm( {
+                                        ...form,
+                                        [ valueI ]: {
+                                          ...form[ valueI ],
+                                          [ index ]: {
+                                            answer: defaultAnswer[valueI][index],
+                                            quotation: (q*index).toString()
+                                          }
+                                        }
+                              } );
+                              }
                               return (
                                 <>
                                   <input
