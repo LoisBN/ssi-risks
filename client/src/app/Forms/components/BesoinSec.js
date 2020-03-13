@@ -36,7 +36,7 @@ const BesoinSec = props => {
     setForm( {} );
     setTimeout( () => {
       props.updateFormVal( props.formName.type, props.formName.name );
-    }, 0 );
+    }, 200 );
 
     console.log( 'from handlesubmit', form );
     props.quit();
