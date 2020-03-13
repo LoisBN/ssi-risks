@@ -160,7 +160,7 @@ const BesoinSec = props => {
                                         ...form,
                                         [ valueI ]: {
                                           answer: e.target.value,
-                                          quotation: (q*(index+1)).toString()
+                                          quotation: (q*index).toString()
                                         }
                                       } )
                                     }
@@ -169,7 +169,7 @@ const BesoinSec = props => {
                                         ...form,
                                         [ valueI ]: {
                                           answer: e.target.value,
-                                          quotation: (q*(index+1)).toString()
+                                          quotation: (q*index).toString()
                                         }
                                       } )
                                     }
@@ -210,7 +210,7 @@ const BesoinSec = props => {
                                           ...form[ valueI ],
                                           [ index ]: {
                                             answer: e.target.value,
-                                            quotation: (q*(index+1)).toString()
+                                            quotation: (q*index).toString()
                                           }
                                         }
                                       } );
@@ -225,7 +225,7 @@ const BesoinSec = props => {
                                           ...form[ valueI ],
                                           [ index ]: {
                                             answer: e.target.value,
-                                            quotation: (q*(index+1)).toString()
+                                            quotation: (q*index).toString()
                                           }
                                         }
                                       } );

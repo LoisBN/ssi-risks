@@ -162,7 +162,7 @@ func UpdateProject(w http.ResponseWriter,req *http.Request)  {
 			fmt.Println(err.Error())
 			return
 		}
-		if client.Get(name).Val() == u.Name {
+		if client.HGet(name,"name").Val() == u.Name {
 			return
 		}
 		client.HSet(name,"initiator",u.Initiator)
