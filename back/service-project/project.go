@@ -186,6 +186,23 @@ func DeleteProject(w http.ResponseWriter,req *http.Request)  {
 	})
 
 	client.Del(name)
+
+	err := getSession().DB("SSI").C("besoinSec").Remove(bson.M{"formName":name})
+	if err != nil {
+		log.Println(err.Error())
+	}
+	err = getSession().DB("SSI").C("impacts").Remove(bson.M{"formName":name})
+	if err != nil {
+		log.Println(err.Error())
+	}
+	err = getSession().DB("SSI").C("menaces").Remove(bson.M{"formName":name})
+	if err != nil {
+		log.Println(err.Error())
+	}
+	err = getSession().DB("SSI").C("importanceVuln").Remove(bson.M{"formName":name})
+	if err != nil {
+		log.Println(err.Error())
+	}
 }
 
 func SaveProject(w http.ResponseWriter,req *http.Request) {
