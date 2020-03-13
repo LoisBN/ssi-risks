@@ -36,7 +36,7 @@ const BesoinSec = props => {
     setForm( {} );
     setTimeout( () => {
       props.updateFormVal( props.formName.type, props.formName.name );
-    }, 500 );
+    }, 0 );
 
     console.log( 'from handlesubmit', form );
     props.quit();
@@ -146,7 +146,7 @@ const BesoinSec = props => {
                       return (
                         <div key={ index } class='field'>
                           <label className='label'>{ val.q }</label>
-                          <p>previous value : { answer[ valueI ] ? defaultAnswer[ valueI ]  : "none" }</p>
+                          <p style={{color:"blue"}}>previous value : { answer[ valueI ] ? defaultAnswer[ valueI ]  : "none" }</p>
                           <div className='control'>
                             { res.map( ( value, index ) => {
                               return (
@@ -192,7 +192,7 @@ const BesoinSec = props => {
                       return (
                         <div key={ index } class='field'>
                           <label className='label'>{ val.q }</label>
-                          <p>previous value : { answer[valueI] ? Object.values(defaultAnswer[valueI]).join() : "none" }</p>
+                          <p style={{color:"blue"}}>previous value : { answer[valueI] ? Object.values(defaultAnswer[valueI]).join() : "none" }</p>
                           <div className='control'>
                             { y.map( ( value, index ) => {
                               return (
