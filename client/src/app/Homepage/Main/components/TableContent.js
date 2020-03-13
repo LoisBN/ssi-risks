@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { saveProject } from '../../../../redux/actions';
+import { saveProject,discard } from '../../../../redux/actions';
 
 const TableContent = props => {
   return (
@@ -64,8 +64,18 @@ const TableContent = props => {
         }}>
         <strong style={{ color: 'white' }}>Sauvegarder</strong>
       </td>
+      <td
+        style={{ borderColor: 'white', cursor: 'pointer' }}
+        className='is-danger'
+        onClick={() => {
+          //props.setDisplayModal(true);
+          //props.setFormName( 'sauvegarder' );
+          props.discard(props.id);
+        }}>
+        <strong style={{ color: 'white' }}>Discard</strong>
+      </td>
     </tr>
   );
 };
 
-export default connect(null, { saveProject })(TableContent);
+export default connect(null, { saveProject,discard })(TableContent);
