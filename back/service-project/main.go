@@ -37,6 +37,7 @@ func main() {
 	r.HandleFunc("/project/delete/{name}", DeleteProject).Methods("GET", "OPTIONS")
 	r.HandleFunc("/project/save/{name}", SaveProject).Methods("POST", "OPTIONS")
 	r.HandleFunc("/projects/fetchSaved",GetAllFromDB)
+	r.HandleFunc("/project/certified/{name}",Certified)
 	r.HandleFunc("/", test)
 
 	srv := &http.Server{

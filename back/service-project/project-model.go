@@ -8,9 +8,16 @@ type Project struct{
 	Impacts string
 	Menaces string
 	ImportanceVuln string
+	DateSave string
+	Certified Certif
 }
 
 type Form map[string]Question
+
+type Certif struct{
+	Certif bool
+	Date string
+}
 
 type Question struct {
 	Question string

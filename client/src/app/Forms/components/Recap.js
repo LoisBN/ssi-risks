@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux'
-import {fetchAnswer} from "../../../redux/actions"
+import {fetchAnswer,certified} from "../../../redux/actions"
 
 const Recap = props => {
     
@@ -20,7 +20,7 @@ const Recap = props => {
                 <div className="container">
             <nav className="panel has-background-white">
                 <p className="panel-heading">
-                    Synthèse partie {current}
+                            Synthèse partie { current }<br />                  {(props.auth.admin) && <button className="button is-info" onClick={()=> props.certified(props.formName.name)}>confirm homologation</button> }
                 </p>
                 <div className="panel-block">
                     <p className="control has-icons-left">
@@ -76,8 +76,10 @@ const Recap = props => {
 
 const mapStateToProps = state => {
     return {
-        answer: state.answer
+        answer: state.answer,
+        auth: state.auth,
+        projects: state.savedProjects
     }
 }
 
-export default connect(mapStateToProps,{fetchAnswer})(Recap);
+export default connect(mapStateToProps,{fetchAnswer,certified})(Recap);

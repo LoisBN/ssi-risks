@@ -126,6 +126,12 @@ const Main = ({
                       </th>
                       <th>Initiateur</th>
                       <th>
+                        <abbr title='Played'>Date demande homologation</abbr>
+                      </th>
+                      <th>
+                        <abbr title='Played'>Type homologation</abbr>
+                      </th>
+                      <th>
                         <abbr title='Played'>Homologation</abbr>
                       </th>
                     </tr>
@@ -136,6 +142,12 @@ const Main = ({
                         <abbr title='Position'>Projet</abbr>
                       </th>
                       <th>Initiateur</th>
+                      <th>
+                        <abbr title='Played'>Date demande homologation</abbr>
+                      </th>
+                      <th>
+                        <abbr title='Played'>Type homologation</abbr>
+                      </th>
                       <th>
                         <abbr title='Played'>Homologation</abbr>
                       </th>
@@ -152,6 +164,8 @@ const Main = ({
                             formName={formName}
                             setFormName={setFormName}
                             id={ val.name }
+                            dateSave={ val.datesave }
+                            certified={val.certified}
                             homologation={val.homologation}
                             name={val.initiator}
                             setValues={setValues}

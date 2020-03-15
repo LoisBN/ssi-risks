@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"time"
 	"net/http"
 
 	"github.com/go-redis/redis"
@@ -165,9 +166,24 @@ func UpdateProject(w http.ResponseWriter,req *http.Request)  {
 		if client.HGet(name,"name").Val() == u.Name {
 			return
 		}
+		if err = getSession().DB("SSI").C("projects").Find(bson.M{"name":u.Name}).One(nil);err != nil {
+			return
+		}
 		client.HSet(name,"initiator",u.Initiator)
 		client.HSet(name,"name",u.Name)
 		}
+	}
+}
+
+func Certified(w http.ResponseWriter,req *http.Request) {
+	setupResponse(&w,req)
+	if req.Method == "OPTIONS" {
+		return
+	} else {
+		params := mux.Vars(req)
+		name := params["name"]
+		paris,_ := time.LoadLocation("Europe/Paris")
+		_ = getSession().DB("SSI").C("projects").Update(bson.M{"name":name},bson.M{"$set" : bson.M{"certified":bson.M{"certif":true,"date": time.Now().In(paris).Format("2 Jan 2006 15:04:05")}}})
 	}
 }
 
@@ -187,22 +203,7 @@ func DeleteProject(w http.ResponseWriter,req *http.Request)  {
 
 	client.Del(name)
 
-	err := getSession().DB("SSI").C("besoinSec").Remove(bson.M{"formName":name})
-	if err != nil {
-		log.Println(err.Error())
-	}
-	err = getSession().DB("SSI").C("impacts").Remove(bson.M{"formName":name})
-	if err != nil {
-		log.Println(err.Error())
-	}
-	err = getSession().DB("SSI").C("menaces").Remove(bson.M{"formName":name})
-	if err != nil {
-		log.Println(err.Error())
-	}
-	err = getSession().DB("SSI").C("importanceVuln").Remove(bson.M{"formName":name})
-	if err != nil {
-		log.Println(err.Error())
-	}
+	
 }
 
 func SaveProject(w http.ResponseWriter,req *http.Request) {
@@ -230,6 +231,7 @@ func SaveProject(w http.ResponseWriter,req *http.Request) {
 			}
 			return
 		}
+		paris,_ := time.LoadLocation("Europe/Paris")
 		p := Project{
 			Name: project.Val()["name"],
 			Initiator: project.Val()["initiator"],
@@ -238,6 +240,7 @@ func SaveProject(w http.ResponseWriter,req *http.Request) {
 			Menaces : project.Val()["menaces"],
 			Impacts : project.Val()["impacts"],
 			ImportanceVuln : project.Val()["importanceVuln"],
+			DateSave : time.Now().In(paris).Format("2 Jan 2006 15:04:05"),
 		}
 		var f Project
 		err := getSession().DB("SSI").C("projects").Find(bson.M{"name":p.Name}).One(&f)

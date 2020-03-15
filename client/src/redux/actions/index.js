@@ -202,6 +202,21 @@ export const discard = projectName => async (dispatch,getState) => {
   });
 }
 
+export const certified = projectName => async (dispatch,getState) => {
+  await projectApi.get( `/project/certified/${ projectName }` );
+  const res = await projectApi.get( '/projects/fetchSaved' );
+  await projectApi.get( `/project/delete/${ projectName }` );
+  const res2 = await projectApi.get('/projects/get/'+ getState().auth.username);
+  dispatch({
+    type: FETCH_LIST_PROJ,
+    payload: res2.data
+  });
+  dispatch({
+    type: FETCH_SAVED_PROJ,
+    payload: res.data
+  });
+}
+
 export const saveProject = name => async dispatch => {
   await projectApi.post(`/project/save/${name}`);
   const res = await projectApi.get('/projects/fetchSaved');
